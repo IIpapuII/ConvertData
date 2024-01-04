@@ -8,14 +8,18 @@ def verData(path_home):
         with open(path_home, 'r') as archivo:
             contenido = archivo.readlines()
             if not contenido:  # Si el archivo está vacío
-                raise ValueError("El archivo está vacío.")
+                print(ValueError("El archivo está vacío."))
+                exit()
             return contenido
     except FileNotFoundError:
-        return "El archivo no se encuentra."
+        print("El archivo no se encuentra.")
+        exit()
     except ValueError as e:
-        return f"Error: {str(e)}"
+        print(f"Error: {str(e)}") 
+        exit()
     except Exception as e:
-        return f"Ocurrió un error: {str(e)}"
+        print(f"Ocurrió un error: {str(e)}")
+        exit()
 
 #funcion encargada de procesar los datos al arreglo para la converción.
 def procesarData(data_int):
