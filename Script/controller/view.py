@@ -1,5 +1,5 @@
-from .extracData import verData, procesarData, saveResult
-
+from .extracData import verData, procesarData, saveResult, procesarDataDos
+from .savaData import savefolder
 '''
 Elemento encargado del llamado de la visual de la información
 y menu de la herramienta
@@ -19,7 +19,8 @@ def setup():
         print(data_line)
         return
     
-    data = procesarData(data_line)
-    print(data)
-    saveResult(data)
+    data = procesarDataDos(data_line)
+    print(len(data))
+    #saveResult(data)
+    savefolder(data)
     
