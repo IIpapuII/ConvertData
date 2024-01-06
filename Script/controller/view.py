@@ -20,7 +20,7 @@ def setup():
         return
     
     data = procesarDataDos(data_line)
-    print(len(data))
+    print(f'Cantidad de Hojas Guardadas: {len(data)}')
     #saveResult(data)
     savefolder(data)
     

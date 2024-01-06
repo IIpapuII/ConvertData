@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 
 #Funcion encargada de leer los datos del archivo txt
@@ -43,14 +43,16 @@ def procesarData(data_int):
         if linea.strip().startswith('P'):
             tiempo_muestreo = 0
             tiempo_muestreo = int(elementos[3])
-            fecha = datetime.strptime(elementos[1][1:12], "%y%m%d%H%M%S").strftime("%m/%d/%y")
+            fecha = datetime.strptime(elementos[1][1:12], "%y%m%d%H%M%S")
             ingre = ingre+1
             continue
         hora = int(tiempo_muestreo_old) // 60
+        if hora > 24:
+            fecha += timedelta(days=1)
         minutos = int(tiempo_muestreo_old) % 60
         count = count+1
         data['No'].append(count)
-        data['Fecha'].append(fecha + f' {hora}:{minutos:02d}')
+        data['Fecha'].append(fecha.strftime("%m/%d/%y") + f' {hora}:{minutos:02d}')
         data['Cabezote Var 1'].append(float(elementos[1]))
         data['Cabezote Var 2'].append(float(elementos[2]))
         data['Cabezote Var 3'].append(float(elementos[3]))
@@ -60,6 +62,8 @@ def procesarData(data_int):
     return pd.DataFrame(data, columns=['No', 'Fecha','Cabezote Var 1', 'Cabezote Var 2', 'Cabezote Var 3', 'Cabezote Var 4'])
 
 def procesarDataDos(data_int):
+    line_count = len(data_int)
+    print(line_count)
     result = []
     data = {
         'No': [],
@@ -72,15 +76,20 @@ def procesarDataDos(data_int):
     tiempo_muestreo = 0
     fecha = datetime
     count = 0
+    count_maxter = 0
     ingre = 0
     tiempo_muestreo_old = 0
+    state = False
     for linea in data_int:
+        count_maxter += 1
         lin = linea.replace(')','')
         lin = lin.replace(' ','')
         elementos = lin.split('(')
         if linea.strip().startswith('P'):
-            df = pd.DataFrame(data, columns=['No', 'Fecha','Cabezote Var 1', 'Cabezote Var 2', 'Cabezote Var 3', 'Cabezote Var 4'])
-            result.append(df)
+            if state == True:
+                df = pd.DataFrame(data, columns=['No', 'Fecha','Cabezote Var 1', 'Cabezote Var 2', 'Cabezote Var 3', 'Cabezote Var 4'])
+                result.append(df)
+                print("Se Agrego Nuevo Registro")
             data = {
                     'No': [],
                     'Fecha': [],
@@ -91,19 +100,30 @@ def procesarDataDos(data_int):
                 }
             tiempo_muestreo = 0
             tiempo_muestreo = int(elementos[3])
-            fecha = datetime.strptime(elementos[1][1:12], "%y%m%d%H%M%S").strftime("%m/%d/%y")
-            ingre = ingre+1
+            date_muestra = elementos[1][1:12]
+            fecha = datetime.strptime(str(date_muestra), "%y%m%d%H%M%S")
+            ingre = ingre + 1
+            tiempo_muestreo_old = (int(fecha.hour)*60) + int(fecha.minute)
+            print(fecha)
             continue
         hora = int(tiempo_muestreo_old) // 60
+        if hora == 24 and minutos == 0:
+            fecha += timedelta(days=1)
+            hora = 0
         minutos = int(tiempo_muestreo_old) % 60
         count = count+1
         data['No'].append(count)
-        data['Fecha'].append(fecha + f' {hora}:{minutos:02d}')
+        data['Fecha'].append(fecha.strftime("%m/%d/%y") + f' {hora}:{minutos:02d}')
         data['Cabezote Var 1'].append(float(elementos[1]))
         data['Cabezote Var 2'].append(float(elementos[2]))
         data['Cabezote Var 3'].append(float(elementos[3]))
         data['Cabezote Var 4'].append(float(elementos[4]))
         tiempo_muestreo_old = tiempo_muestreo_old + tiempo_muestreo
+        if count_maxter == line_count:
+            df = pd.DataFrame(data, columns=['No', 'Fecha','Cabezote Var 1', 'Cabezote Var 2', 'Cabezote Var 3', 'Cabezote Var 4'])
+            result.append(df)
+            print("Final Register")
+        state = True
     return result
 #Funcion encargada del guardar el archivo.
 def saveResult(data_frame):
