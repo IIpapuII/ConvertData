@@ -63,7 +63,7 @@ def procesarData(data_int):
 
 def procesarDataDos(data_int):
     line_count = len(data_int)
-    print(line_count)
+    print(f'Cantidad de Registro trabajar: {line_count}')
     result = []
     data = {
         'No': [],
@@ -109,7 +109,7 @@ def procesarDataDos(data_int):
         hora = int(tiempo_muestreo_old) // 60
         if hora == 24 and minutos == 0:
             fecha += timedelta(days=1)
-            hora = 0
+            tiempo_muestreo_old = 0
         minutos = int(tiempo_muestreo_old) % 60
         count = count+1
         data['No'].append(count)
