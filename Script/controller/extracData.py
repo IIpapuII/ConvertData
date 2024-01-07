@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 import os
+from werkzeug.datastructures import FileStorage
 
 #Funcion encargada de leer los datos del archivo txt
 def verData(path_home):
@@ -20,6 +21,28 @@ def verData(path_home):
     except Exception as e:
         print(f"Ocurrió un error: {str(e)}")
         exit()
+def verDataDos(file):
+    try:
+        if not isinstance(file, FileStorage):
+            raise TypeError("Se esperaba un objeto FileStorage.")
+
+        contenido = []
+        for line in file:
+            contenido.append(line.decode('utf-8').strip())
+
+        if not contenido:
+            raise ValueError("El archivo está vacío.")
+
+        return contenido
+    except TypeError as e:
+        print(f"Error: {str(e)}") 
+        return []  # Devolver una lista vacía en caso de tipo incorrecto
+    except ValueError as e:
+        print(f"Error: {str(e)}") 
+        return []  # Devolver una lista vacía en caso de archivo vacío
+    except Exception as e:
+        print(f"Ocurrió un error: {str(e)}")
+        return []  # Devolver una lista vacía en caso de otro tipo de error
 
 #funcion encargada de procesar los datos al arreglo para la converción.
 def procesarData(data_int):
@@ -128,7 +151,7 @@ def procesarDataDos(data_int):
 #Funcion encargada del guardar el archivo.
 def saveResult(data_frame):
     df = data_frame
-    file_path = 'data.xlsx'  # Ruta y nombre del archivo a guardar
+    file_path = os.path.join('static', 'output.xlsx')  # Ruta y nombre del archivo a guardar
     df.to_excel(file_path, index=False)
 
     absolute_path = os.path.abspath(file_path)  # Ruta absoluta del archivo guardado

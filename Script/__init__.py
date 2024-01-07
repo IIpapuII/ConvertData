@@ -7,7 +7,8 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'
+        ),
     )
 
     if test_config is None:
@@ -27,5 +28,11 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
+    
+    from .view import home, upload
+    
+    app.register_blueprint(home.home_site)
+    app.register_blueprint(upload.upload_file)
+    
 
     return app.run(debug= True)

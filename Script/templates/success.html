@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Descarga
+{% endblock %}
+
+{% block body %}
+<h2>Archivo convertido correctamente a Excel.</h2>
+    <a href="{{ url_for('static', filename=excel_file) }}">Descargar archivo Excel</a>
+{% endblock %}
