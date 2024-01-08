@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Consulta
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Filtered Data</h1> 
+    <a class="btn btn-primary" href="{{ url_for('static', filename='data_result.xlsx') }}" download>Descargar Resultados</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>fecha_guardado</th>
+                <th>Fecha</th>
+                <th>CVar1</th>
+                <th>CVar2</th>
+                <th>CVar3</th>
+                <th>CVar4</th>
+                <th>CodeStatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data.iterrows() %}
+                <tr>
+                    <td>{{ row[1]['id'] }}</td>
+                    <td>{{ row[1]['fecha_guardado'] }}</td>
+                    <td>{{ row[1]['Fecha'] }}</td>
+                    <td>{{ row[1]['CVar1'] }}</td>
+                    <td>{{ row[1]['CVar2'] }}</td>
+                    <td>{{ row[1]['CVar3'] }}</td>
+                    <td>{{ row[1]['CVar4'] }}</td>
+                    <td>{{ row[1]['CodeStatus'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

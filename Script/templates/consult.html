@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Consulta
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Filtro de Datos</h1>
+    <form action="/filter" method="post">
+        <div class="mb-3">
+            <label for="fecha" class="form-label">Fecha:</label>
+            <input type="text" class="form-control" name="fecha" id="fecha">
+        </div>
+        <div class="mb-3">
+            <label for="code_status" class="form-label">CodeStatus:</label>
+            <input type="text" class="form-control" name="code_status" id="code_status">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+</div>
+{% endblock %}

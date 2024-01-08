@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS DataElectric (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fecha_guardado TEXT DEFAULT CURRENT_TIMESTAMP,
+    Fecha TEXT,
+    CVar1 REAL,
+    CVar2 REAL,
+    CVar3 REAL,
+    CVar4 REAL,
+    CodeStatus TEXT
+);

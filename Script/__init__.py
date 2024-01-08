@@ -1,7 +1,5 @@
 import os
-
 from flask import Flask
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -10,7 +8,7 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'
         ),
     )
-
+    app.config['DATABASE'] = 'medidas.db'
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -28,11 +26,12 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
-    
-    from .view import home, upload
+    from .view import home, upload, consult
     
     app.register_blueprint(home.home_site)
     app.register_blueprint(upload.upload_file)
+    app.register_blueprint(consult.query_data)
     
 
-    return app.run(debug= True)
+
+    return app

@@ -11,3 +11,10 @@ def savefolder(frame_data):
     
     writer._save()
     return nameFile
+
+def saveResult(frame_data):
+    nameFile = 'data_result.xlsx'
+    excel_filename = os.path.join('Script/static', nameFile)
+    df = pd.DataFrame(frame_data)
+    df.to_excel(excel_filename, index=False)
+    return nameFile

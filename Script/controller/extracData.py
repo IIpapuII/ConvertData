@@ -88,6 +88,7 @@ def procesarDataDos(data_int):
     line_count = len(data_int)
     print(f'Cantidad de Registro trabajar: {line_count}')
     result = []
+    Result = []
     data = {
         'No': [],
         'Fecha': [],
@@ -156,3 +157,10 @@ def saveResult(data_frame):
 
     absolute_path = os.path.abspath(file_path)  # Ruta absoluta del archivo guardado
     print(f"El archivo se guardó en: {absolute_path}")
+
+
+#Lector de sql
+def read_sql(name_file):
+    with open(os.path.join('Script/static',name_file)) as file:
+        sql_script = file.read()
+        return sql_script

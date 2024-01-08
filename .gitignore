@@ -190,3 +190,5 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+*db
